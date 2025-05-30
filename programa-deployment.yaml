@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: programa-service
+spec:
+  type: ClusterIP
+  selector:
+    app: programa-service
+  ports:
+    - port: 8086
+      targetPort: 8086
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: programa-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: programa-service
+  template:
+    metadata:
+      labels:
+        app: programa-service
+    spec:
+      containers:
+        - name: programa-service
+          image: angelcuero/programa-service:latest
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "500m"
+            limits:
+              memory: "2Gi"
+              cpu: "1000m"
+          ports:
+            - containerPort: 8086
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:postgresql://postgres:5432/programa"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "devdb"
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: "a1b2c3d4"
+            - name: JPA_DDL
+              value: "create-drop"
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              value: "http://eureka-server:8761/eureka"
+            - name: SERVER_PORT
+              value: "8086"
