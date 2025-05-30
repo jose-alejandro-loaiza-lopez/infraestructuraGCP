@@ -1,32 +1,32 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: costos-service
+  name: discretas-service
 spec:
   type: ClusterIP
   selector:
-    app: costos-service
+    app: discretas-service
   ports:
-    - port: 8084
-      targetPort: 8084
+    - port: 8089
+      targetPort: 8089
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: costos-service
+  name: discretas-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: costos-service
+      app: discretas-service
   template:
     metadata:
       labels:
-        app: costos-service
+        app: discretas-service
     spec:
       containers:
-        - name: costos-service
-          image: angiecobo/ova-costos:latest
+        - name: discretas-service
+          image: angelcuero/discretas-jni:latest
           resources:
             requests:
               memory: "512Mi"
@@ -35,9 +35,7 @@ spec:
               memory: "2Gi"
               cpu: "1000m"
           ports:
-            - containerPort: 8084
+            - containerPort: 8089
           env:
-            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
-              value: "http://eureka-server:8761/eureka"
             - name: SERVER_PORT
-              value: "8084"
+              value: "8089"

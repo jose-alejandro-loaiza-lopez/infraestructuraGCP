@@ -84,3 +84,10 @@ spec:
             name: ova-service
             port:
               number: 8088
+      - path: /discretas(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: discretas-service
+            port:
+              number: 8089
