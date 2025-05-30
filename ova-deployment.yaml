@@ -1,32 +1,32 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: costos-service
+  name: ova-service
 spec:
   type: ClusterIP
   selector:
-    app: costos-service
+    app: ova-service
   ports:
-    - port: 8084
-      targetPort: 8084
+    - port: 8088
+      targetPort: 8088
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: costos-service
+  name: ova-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: costos-service
+      app: ova-service
   template:
     metadata:
       labels:
-        app: costos-service
+        app: ova-service
     spec:
       containers:
-        - name: costos-service
-          image: angiecobo/ova-costos:latest
+        - name: ova-service
+          image: angiecobo/ova-microservicio:latest
           resources:
             requests:
               memory: "512Mi"
@@ -35,10 +35,10 @@ spec:
               memory: "2Gi"
               cpu: "1000m"
           ports:
-            - containerPort: 8084
+            - containerPort: 8088
           env:
             - name: SPRING_DATASOURCE_URL
-              value: "jdbc:postgresql://postgres:5432/costos"
+              value: "jdbc:postgresql://postgres:5432/ovas"
             - name: SPRING_DATASOURCE_USERNAME
               value: "devdb"
             - name: SPRING_DATASOURCE_PASSWORD
@@ -48,4 +48,4 @@ spec:
             - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
               value: "http://eureka-server:8761/eureka"
             - name: SERVER_PORT
-              value: "8084"
+              value: "8088"

@@ -6,6 +6,11 @@ metadata:
     kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/rewrite-target: /$2
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "https://santio.space"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "PUT, GET, POST, DELETE, OPTIONS"
+    nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range"
+    nginx.ingress.kubernetes.io/cors-expose-headers: "Content-Length,Content-Range"
 spec:
   ingressClassName: nginx
   tls:
@@ -72,3 +77,10 @@ spec:
             name: curso-service
             port:
               number: 8087
+      - path: /ova(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: ova-service
+            port:
+              number: 8088
